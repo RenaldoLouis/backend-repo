@@ -23,3 +23,5 @@ yarn-debug.log*
 yarn-error.log*
 
 .env
+
+/ebuddy-4878b-firebase-adminsdk-qz5ug-dba71e65f9.json
