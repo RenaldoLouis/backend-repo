@@ -10,15 +10,12 @@ const bodyUserValidation = [
 const registerValidation = [
     body('name').notEmpty().withMessage('Name is required'),
     body('email').notEmpty().withMessage('Email is required'),
-    body('email').isEmail().withMessage('Invalid email address'),
-    body('password').notEmpty().withMessage('password is required'),
-    body('role').notEmpty().withMessage('role is required'),
+    body('email').isEmail().withMessage('Invalid email address')
 ];
 
 const loginValidation = [
     body('email').notEmpty().withMessage('Email is required'),
-    body('email').isEmail().withMessage('Invalid email address'),
-    body('password').notEmpty().withMessage('password is required'),
+    body('email').isEmail().withMessage('Invalid email address')
 ];
 
 const idUserValidation = [

@@ -2,18 +2,20 @@ const { db } = require('../configs/firebaseConfig.js');
 const dataUtil = require('../utils/DataUtil')
 var bcrypt = require('bcrypt');
 
-const { getCreateUserResponseDTO } = require('../models/UserModel');
+const { getCreateUserResponseDTO, getUpdateUserResponseDTO } = require('../models/UserModel');
 
 const getUsers = async (callback) => {
-    const snapshot = await db.collection('karyawan').get();
-    const data = [];
-    snapshot.forEach(doc => {
-        data.push({ id: doc.id, ...doc.data() });
-    });
-    if (data.length <= 0) {
-        return callback(new Error('No documents found'));
-    } else {
+    try {
+        const snapshot = await db.collection('users').get();
+        const data = [];
+        if (snapshot.docs.length > 0) {
+            snapshot.forEach(doc => {
+                data.push({ id: doc.id, ...doc.data() });
+            });
+        }
         return callback(null, data);
+    } catch (error) {
+        throw error;
     }
 };
 
@@ -60,46 +62,47 @@ const getUsers = async (callback) => {
 
 // }
 
-// const createUser = async (params, callback) => {
-//     const { name, email, password, role } = params
+const createUser = async (params, callback) => {
+    const { name, email } = params
 
-//     try {
-//         const rows = await db.query(
-//             'INSERT INTO users (name, email, password,role) VALUES (?, ?, ?,?)',
-//             [name, email, password, role]
-//         );
-//         if (rows.affectedRows > 0) {
-//             const data = getCreateUserResponseDTO(params);
-//             return {
-//                 data,
-//             }
-//         } else {
-//             throw new Error('Failed to inserted user');
-//         }
-//     }
-//     catch (error) {
-//         throw error;
-//     }
-// }
+    try {
+        db.collection('users').add({
+            name: name,
+            email: email
+        })
 
-// const updateUser = (id, userData, callback) => {
-//     const { name, email } = userData
+        const data = getCreateUserResponseDTO(params);
 
-//     query(
-//         'UPDATE users SET name = $1, email = $2 WHERE id = $3 RETURNING id,name,email',
-//         [name, email, id],
-//         (error, results) => {
-//             if (error) {
-//                 return callback(error);
-//             }
-//             if (results.rowCount === 1 && results.rows[0].id) {
-//                 return callback(null, getCreateUserResponseDTO(results.rows[0]));
-//             } else {
-//                 return callback(new Error('Failed to update user'));
-//             }
-//         }
-//     )
-// }
+        return {
+            data,
+        }
+
+    }
+    catch (error) {
+        throw error;
+    }
+}
+
+const updateUser = async (id, userData, callback) => {
+    const { name, email } = userData
+
+    try {
+        db.collection('users').doc(id).set({
+            name: name,
+            email: email
+        })
+
+        const data = getUpdateUserResponseDTO(userData);
+
+        return {
+            data,
+        }
+
+    }
+    catch (error) {
+        throw error;
+    }
+}
 
 // const deleteUser = (id, callback) => {
 //     query('DELETE FROM users WHERE id = $1 RETURNING id', [id], (error, results) => {
@@ -118,7 +121,7 @@ module.exports = {
     getUsers,
     // getUserById,
     // getUserByEmail,
-    // createUser,
-    // updateUser,
+    createUser,
+    updateUser,
     // deleteUser,
 }

@@ -1,14 +1,21 @@
 function getCreateUserResponseDTO(user) {
     return {
         message: 'Success create user',
-        id: user.id,
         name: user.name,
-        email: user.email,
-        role: user.role
+        email: user.email
+    }
+};
+
+function getUpdateUserResponseDTO(user) {
+    return {
+        message: 'User succesfully updated',
+        name: user.name,
+        email: user.email
     }
 };
 
 
 module.exports = {
-    getCreateUserResponseDTO
+    getCreateUserResponseDTO,
+    getUpdateUserResponseDTO
 }

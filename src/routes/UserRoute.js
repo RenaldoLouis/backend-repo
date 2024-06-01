@@ -5,9 +5,8 @@ const validationUtil = require('../utils/ValidationUtil');
 
 // router.post('/login', validationUtil.loginValidation, userController.login)
 
-router.get('', userController.getUsers)
-// router.get('/users/:id', userController.getUserById)
-// router.post('/users', validationUtil.bodyUserValidation, userController.create)
-// router.put('/users/:id', [validationUtil.idUserValidation, validationUtil.bodyUserValidation], userController.update)
+router.get('/fetch-user-data', userController.getUsers)
+router.post('/create-user-data', validationUtil.bodyUserValidation, userController.create)
+router.put('/update-user-data/:id', validationUtil.bodyUserValidation, userController.update)
 
 module.exports = router;

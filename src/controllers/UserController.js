@@ -10,7 +10,7 @@ async function getUsers(req, res, next) {
         if (users.length > 0) {
             res.status(200).json(users);
         } else {
-            res.status(201).json(users);
+            res.status(204).json(users);
         }
     } catch (err) {
         next(err);
@@ -64,41 +64,41 @@ async function getUsers(req, res, next) {
 //     }
 // }
 
-// async function create(req, res, next) {
-//     try {
-//         const errorValidation = validationResult(req);
-//         if (errorValidation.errors.length > 0) {
-//             errorValidation.errors[0].statusCode = 400;
-//             return next(errorValidation.errors[0]);
-//         }
+async function create(req, res, next) {
+    try {
+        const errorValidation = validationResult(req);
+        if (errorValidation.errors.length > 0) {
+            errorValidation.errors[0].statusCode = 400;
+            return next(errorValidation.errors[0]);
+        }
 
-//         const user = await UserService.createUser(req, next)
-//         res.status(200).send(user)
-//     } catch (err) {
-//         next(err);
-//     }
-// }
+        const user = await UserService.createUser(req, next)
+        res.status(200).send(user)
+    } catch (err) {
+        next(err);
+    }
+}
 
-// async function update(req, res, next) {
-//     try {
-//         const errorValidation = validationResult(req);
-//         if (errorValidation.errors.length > 0) {
-//             errorValidation.errors[0].statusCode = 400;
-//             return next(errorValidation.errors[0]);
-//         }
+async function update(req, res, next) {
+    try {
+        const errorValidation = validationResult(req);
+        if (errorValidation.errors.length > 0) {
+            errorValidation.errors[0].statusCode = 400;
+            return next(errorValidation.errors[0]);
+        }
 
-//         const users = await UserService.updateUser(req, next)
-//         res.status(200).json(users);
-//     } catch (err) {
-//         next(err);
-//     }
-// }
+        const users = await UserService.updateUser(req, next)
+        res.status(200).json(users);
+    } catch (err) {
+        next(err);
+    }
+}
 
 module.exports = {
     getUsers,
     // getUserById,
-    // create,
+    create,
     // register,
-    // update,
+    update,
     // login
 };

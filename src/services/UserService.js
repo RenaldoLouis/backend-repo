@@ -30,25 +30,26 @@ async function getUsers(req, next) {
 //     }
 // }
 
-// async function createUser(req, next) {
-//     const body = req;
-//     try {
-//         let user = await db.createUser(body)
-//         return user.data;
-//     } catch (error) {
-//         next(error);
-//     }
-// }
+async function createUser(req, next) {
+    const body = req.body;
+    try {
+        let user = await userRepo.createUser(body)
+        return user.data;
+    } catch (error) {
+        next(error);
+    }
+}
 
-// async function updateUser(req, next) {
-//     const id = req.params.id;
-//     const body = req.body;
-//     try {
-//         return await DatabaseUtil.executeDatabaseOperation(db.updateUser, id, body);
-//     } catch (error) {
-//         next(error);
-//     }
-// }
+async function updateUser(req, next) {
+    const id = req.params.id;
+    const body = req.body;
+    try {
+        let user = await userRepo.updateUser(id, body)
+        return user.data;
+    } catch (error) {
+        next(error);
+    }
+}
 
 // async function deleteUserById(req, next) {
 //     const id = req.params.id;
@@ -64,6 +65,6 @@ module.exports = {
     // getByUserId,
     // getByUserEmail,
     // deleteUserById,
-    // createUser,
-    // updateUser
+    createUser,
+    updateUser
 };
